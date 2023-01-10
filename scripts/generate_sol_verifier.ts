@@ -1,11 +1,14 @@
 import path from 'path';
-import { compile } from '@noir-lang/noir_wasm';
+import { compile, acir_from_bytes } from '@noir-lang/noir_wasm';
 import { setup_generic_prover_and_verifier } from '@noir-lang/barretenberg/dest/client_proofs';
-import { writeFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 
 async function generate_sol_verifier() {
-    let compiled_program = compile(path.resolve(__dirname, '../circuits/src/main.nr'));
-    const acir = compiled_program.circuit;
+    const buffer = readFileSync(path.resolve(__dirname, '../circuits/build/main.acir'));
+    const acir = await acir_from_bytes(new Uint8Array(buffer));
+
+    // let compiled_program = compile(path.resolve(__dirname, '../circuits/src/main.nr'));
+    // const acir = compiled_program.circuit;
     
     let [_, verifier] = await setup_generic_prover_and_verifier(acir);
 

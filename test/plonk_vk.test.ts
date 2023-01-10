@@ -46,8 +46,8 @@ describe("TurboVerifier", function () {
     });
 
     it("Should verify proof in nargo", async function () {
-        abi.x = 1;
-        abi.y = 2;
+        abi.x = 104;
+        // abi.result = [44, 242, 77, 186, 95, 176, 163, 14, 38, 232, 59, 42, 197, 185, 226, 158, 27, 22, 30, 92, 31, 167, 66, 94, 115, 4, 51, 98, 147, 139, 152, 36];
 
         const proof = await create_proof(prover, acir, abi);
         const verified = await verify_proof(verifier, proof);
@@ -56,8 +56,8 @@ describe("TurboVerifier", function () {
     });
 
     it("Should reject false proof", async function () {
-        abi.x = 2;
-        abi.y = 2;
+        abi.x = 35;
+        // abi.result = [0, 0, 77, 186, 95, 176, 163, 14, 38, 232, 59, 42, 197, 185, 226, 158, 27, 22, 30, 92, 31, 167, 66, 94, 115, 4, 51, 98, 147, 139, 152, 36];
 
         const proof = await create_proof(prover, acir, abi);
         const verified = await verify_proof(verifier, proof);
@@ -66,8 +66,8 @@ describe("TurboVerifier", function () {
     });
 
     it("Should verify proof in smart contract", async function () {
-        abi.x = 2;
-        abi.y = 3;
+        abi.x = 104;
+        // abi.result = [0, 0, 77, 186, 95, 176, 163, 14, 38, 232, 59, 42, 197, 185, 226, 158, 27, 22, 30, 92, 31, 167, 66, 94, 115, 4, 51, 98, 147, 139, 152, 36];
 
         const proof = await create_proof(prover, acir, abi);
         const sc_verified = await verifierContract.verify(proof);
@@ -76,8 +76,8 @@ describe("TurboVerifier", function () {
     });
 
     it("Should reject false proof in smart contract", async function () {
-        abi.x = 3;
-        abi.y = 3;
+        abi.x = 35;
+        // abi.result = [0, 0, 77, 186, 95, 176, 163, 14, 38, 232, 59, 42, 197, 185, 226, 158, 27, 22, 30, 92, 31, 167, 66, 94, 115, 4, 51, 98, 147, 139, 152, 36];
 
         const proof = await create_proof(prover, acir, abi);
 
