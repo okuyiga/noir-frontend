@@ -4,11 +4,11 @@ import { setup_generic_prover_and_verifier } from '@noir-lang/barretenberg/dest/
 import { readFileSync, writeFileSync } from 'fs';
 
 async function generate_sol_verifier() {
-    const buffer = readFileSync(path.resolve(__dirname, '../circuits/build/main.acir'));
-    const acir = await acir_from_bytes(new Uint8Array(buffer));
+    // const buffer = readFileSync(path.resolve(__dirname, '../circuits/build/main.acir'));
+    // const acir = await acir_from_bytes(new Uint8Array(buffer));
 
-    // let compiled_program = compile(path.resolve(__dirname, '../circuits/src/main.nr'));
-    // const acir = compiled_program.circuit;
+    let compiled_program = compile(path.resolve(__dirname, '../circuits/src/main.nr'));
+    const acir = compiled_program.circuit;
     
     let [_, verifier] = await setup_generic_prover_and_verifier(acir);
 

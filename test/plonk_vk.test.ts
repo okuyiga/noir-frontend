@@ -11,6 +11,7 @@ import { writeFileSync } from "fs";
 
 
 describe("TurboVerifier", function () {
+    this.timeout(0);
     let verifierContract: any;
     let acir: any;
     let abi: any;
@@ -21,6 +22,7 @@ describe("TurboVerifier", function () {
 
         const Verifier = await ethers.getContractFactory("TurboVerifier");
         verifierContract = await Verifier.deploy();
+        console.log(verifierContract);
         await verifierContract.deployed();
 
         const compiled_program = compile(path.resolve(__dirname, "../circuits/src/main.nr"));
@@ -46,8 +48,9 @@ describe("TurboVerifier", function () {
     });
 
     it("Should verify proof in nargo", async function () {
-        abi.x = 104;
-        // abi.result = [44, 242, 77, 186, 95, 176, 163, 14, 38, 232, 59, 42, 197, 185, 226, 158, 27, 22, 30, 92, 31, 167, 66, 94, 115, 4, 51, 98, 147, 139, 152, 36];
+        abi.x = 189;
+        // abi.y = 35;
+        abi.result = [104, 50, 87, 32, 170, 189, 124, 130, 243, 15, 85, 75, 49, 61, 5, 112, 201, 90, 204, 187, 125, 196, 181, 170, 225, 18, 4, 192, 143, 254, 115, 43];
 
         const proof = await create_proof(prover, acir, abi);
         const verified = await verify_proof(verifier, proof);
@@ -56,8 +59,9 @@ describe("TurboVerifier", function () {
     });
 
     it("Should reject false proof", async function () {
-        abi.x = 35;
-        // abi.result = [0, 0, 77, 186, 95, 176, 163, 14, 38, 232, 59, 42, 197, 185, 226, 158, 27, 22, 30, 92, 31, 167, 66, 94, 115, 4, 51, 98, 147, 139, 152, 36];
+        abi.x = 199;
+        // abi.y = 35;
+        abi.result = [104, 50, 87, 32, 170, 189, 124, 130, 243, 15, 85, 75, 49, 61, 5, 112, 201, 90, 204, 187, 125, 196, 181, 170, 225, 18, 4, 192, 143, 254, 115, 43];
 
         const proof = await create_proof(prover, acir, abi);
         const verified = await verify_proof(verifier, proof);
@@ -66,18 +70,21 @@ describe("TurboVerifier", function () {
     });
 
     it("Should verify proof in smart contract", async function () {
-        abi.x = 104;
-        // abi.result = [0, 0, 77, 186, 95, 176, 163, 14, 38, 232, 59, 42, 197, 185, 226, 158, 27, 22, 30, 92, 31, 167, 66, 94, 115, 4, 51, 98, 147, 139, 152, 36];
+        abi.x = 189;
+        // abi.y = 35;
+        abi.result = [104, 50, 87, 32, 170, 189, 124, 130, 243, 15, 85, 75, 49, 61, 5, 112, 201, 90, 204, 187, 125, 196, 181, 170, 225, 18, 4, 192, 143, 254, 115, 43];
 
         const proof = await create_proof(prover, acir, abi);
+        const proofArr = [...proof];
         const sc_verified = await verifierContract.verify(proof);
 
         expect(sc_verified).eq(true);
     });
 
     it("Should reject false proof in smart contract", async function () {
-        abi.x = 35;
-        // abi.result = [0, 0, 77, 186, 95, 176, 163, 14, 38, 232, 59, 42, 197, 185, 226, 158, 27, 22, 30, 92, 31, 167, 66, 94, 115, 4, 51, 98, 147, 139, 152, 36];
+        abi.x = 199;
+        // abi.y = 35;
+        abi.result = [104, 50, 87, 32, 170, 189, 124, 130, 243, 15, 85, 75, 49, 61, 5, 112, 201, 90, 204, 187, 125, 196, 181, 170, 225, 18, 4, 192, 143, 254, 115, 43];
 
         const proof = await create_proof(prover, acir, abi);
 

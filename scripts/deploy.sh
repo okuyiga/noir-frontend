@@ -10,7 +10,7 @@ fi
 
 echo "Deploying verifier"
 
-forge create ./src/plonk_vk.sol:TurboVerifier -i --rpc-url 'https://eth-goerli.alchemyapi.io/v2/'${ALCHEMY_API_KEY} --private-key ${GOERLI_PRIVATE_KEY} | tee deploy.log
+forge create ./src/plonk_vk.sol:TurboVerifier -i --rpc-url 'https://goerli.infura.io/v3/7a28303b4a5842a8b068dbfc44119d6e' --private-key ${GOERLI_PRIVATE_KEY} | tee deploy.log
 
 echo ""
 
